@@ -1,0 +1,81 @@
+version: '3.8'
+ 
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: projectC 
+    restart: unless-stopped
+    working_dir: /var/www
+    volumes:
+      - .:/var/www
+    # command: sh -c "composer install && php artisan key:generate && php artisan migrate --force && php artisan db:seed && php-fpm"
+    command: sh -c "
+     composer install &&
+     php artisan key:generate &&
+     until php -r 'new PDO(\"mysql:host=db;dbname=projectC\",\"laravel\",\"laravel\");' 2>/dev/null; do echo 'Waiting for MySQL...'; sleep 2; done &&
+     php artisan migrate --force &&
+     php artisan db:seed &&
+     php artisan serve --host=0.0.0.0 --port=8000"
+
+
+    networks:
+      - laravel
+
+    ports:
+    - "8002:8000"  
+
+  db:
+    image: mysql:8.0
+    container_name: projectC_db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: projectC
+      MYSQL_USER: laravel
+      MYSQL_PASSWORD: laravel
+    ports:
+      - "3308:3306"
+    volumes:
+      - dbdata:/var/lib/mysql
+    networks:
+      - laravel
+  
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: projectC_phpmyadmin
+    restart: unless-stopped
+    ports:
+      - "8082:80"
+    environment:
+      PMA_HOST: db
+      PMA_USER: laravel
+      PMA_PASSWORD: laravel
+    networks:
+      - laravel
+      
+  queue:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: projectC_queue
+    working_dir: /var/www
+    volumes:
+      - .:/var/www
+    depends_on:
+      - db
+    command: sh -c "
+      until php -r 'new PDO(\"mysql:host=db;dbname=projectC\",\"laravel\",\"laravel\");' 2>/dev/null; do echo 'Waiting for MySQL...'; sleep 2; done &&
+      php artisan migrate --force &&
+      php artisan queue:work --sleep=3 --tries=3"
+    networks:
+      - laravel    
+
+networks:
+  laravel:
+
+ 
+    
+volumes:
+  dbdata:
