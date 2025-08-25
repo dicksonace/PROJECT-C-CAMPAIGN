@@ -5,7 +5,7 @@
 
 ### project Setup
 
-3. run this:
+run this:
    ```bash
    docker compose up --build
    ```
@@ -33,13 +33,13 @@
   ```
    
 
-### 3. Load Audience
+### 2. Load Audience
 - `POST /api/audiences` -Load Audience (paginated)
   
 
 
 
-### 4. Estimate Audience Size
+### 3. Estimate Audience Size
 - `POST /api/estimate-audience-size` - Estimate Audience Size
 
 -   ### Example Request body
@@ -56,7 +56,7 @@
 
  
 
-### 5. Create Campaign
+### 4. Create Campaign
 - `POST /api/estimate-audience-size` - Create Campaign
 
 - ### Example request header
@@ -78,7 +78,7 @@
 
 
 
-### 6. Activate Capaign
+### 5. Activate Capaign
 - `POST /api/webhooks/momo` - Activate Capaign
 
 -  ### Example Request header
@@ -108,7 +108,7 @@
 
 
 
-### 7. Audience Last-touch
+### 6. Audience Last-touch
 - `POST /api/audience/last-touch/{AUDIENCE_ID}` - Audience Last-touch
 
 
