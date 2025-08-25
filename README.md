@@ -17,73 +17,104 @@
 ## steps
 
 
-
-## API Endpoints
-The backend is configured to allow requests from:
-- `http://localhost:5173` (Vite dev server)
-- `http://localhost:3000` (Alternative React dev server)
-
-
-### products
-- `GET /api/products` - List all products (paginated)
-
-### orders
-- `POST /api/orders` - Create new order
+### 1. Add New Audience
+- `GET /api/subscribe` - add new audience
   
-  ### Example Request Body
-
-```json
-{
-  "items": [
-    { "product_id": 5, "quantity": 535 },
-    { "product_id": 4, "quantity": 515 }
-  ]
-}
-
-```
-
-
-### Payments
-- `POST /api/payments/charge` - Charge a payment (requires Idempotency-Key)
-
--   ### Example Request header
-
-  ```text
-    Idempotency-Key: charge:3
+   ```text
+    Idempotency-Key: audience:474545
       
    ```
 
-  ### the number attached to charge:3 is the id of the order
+   ```json
+   {
+    "email": "her@gmail.com",
+    "segment": "new users"
+  }
+  ```
+   
+
+### 3. Load Audience
+- `POST /api/audiences` -Load Audience (paginated)
+  
 
 
 
+### 4. Estimate Audience Size
+- `POST /api/estimate-audience-size` - Estimate Audience Size
 
-### Webhook
-- `POST /api/webhooks/momo` - Process payment
+-   ### Example Request body
 
--    ### Example Request header
+ ```json
+    {
+    "email":[
+        "her@gmail.com",
+        "herc@gmail.com"
+    ],
+    "segment": "new users b"
+}
+```
+
+ 
+
+### 5. Create Campaign
+- `POST /api/estimate-audience-size` - Create Campaign
+
+- ### Example request header
+  ```text
+   Idempotency-Key:campaign:rewevfsfss
+  ```
+
+
+-   ### Example Request body
+
+ ```json
+  {
+    "name": "welcome ccc",
+    "content": "hi new users",
+    "segment": "new users",
+    "budget": 200
+}
+```
+
+
+
+### 6. Activate Capaign
+- `POST /api/webhooks/momo` - Activate Capaign
+
+-  ### Example Request header
 
       ```text
      header{
-        X-Signature: 7135a0d7ff10f393a00ca213b62719a0990722f892f89a09669e3ee14dd29e92,
+        X-Signature: 1099920e82212e9c421a55c4278120244425ad6f3e3934a9c8d27af1b46df0b5,
       }
       
       ```
 
 
-    ### Example Request Body
+  ### Example Request Body
 
 ```json
 {
-        "order_id": 3,
-        "amount": "142050.00",
-        "status": "initiated",
-        "idempotency_key": "charge:3",
-        "id": 1
+        "name": "welcome ccc",
+        "content": "hi new users",
+        "segment": "new users",
+        "budget": 200,
+        "status": "draft",
+        "idempotency_key": "campaign:rewevfs"
     }
 ```
 
-### will get this playload after processing the payment 
+
+
+
+
+### 7. Audience Last-touch
+- `POST /api/audience/last-touch/{AUDIENCE_ID}` - Audience Last-touch
+
+
+
+
+
 
 
 
