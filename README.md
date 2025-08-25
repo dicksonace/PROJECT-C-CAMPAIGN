@@ -1,5 +1,5 @@
 
-# PROJECT A - ORDER-PAY-NOTIFY
+# PROJECT C - Audience & Campaigns (DaaS-style, privacy-first)
 
 ## Setup Instructions
 
@@ -10,25 +10,11 @@
    docker compose up --build
    ```
 
-- The backend will be available at `http://localhost:8000`
-- The frontend will be available at `http://localhost:5173`
+- The backend will be available at `http://localhost:8002`
 
-
-
-## Project Structure
-
-- `admin-ui/` - React frontend application
-- `backend_api/` - Laravel backend API
   
 
 ## steps
-
-### Backend API (Laravel)
-- **Orders Management**: Create and view orders
-- **Payment Processing**: Charge payments with idempotency
-- **Product Management**: List products
-- **Dashboard Metrics**: Real-time statistics
-- **Webhook Support**: Handle payment webhooks
 
 
 
